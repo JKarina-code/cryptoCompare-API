@@ -10,11 +10,11 @@
   </head>
   <body>
     <div class="container">
-      <div class="row">
+      <div class="row contentCrypto">
         <div class="one-half column">
           <img src="img/cryptocurrencies.png" />
         </div>
-        <div class="one-half column">
+        <div class="one-half column contentForm">
           <form id="formCrypto">
             <div class="row">
               <label>Choose your currency</label>
@@ -32,10 +32,12 @@
                 <label>Choose your Cryptocurrency</label>
                 <select
                   class="u-full-width"
-                  id="cryptocurrencies"
+                  id="cryptocurrency"
                   name="cryptocurrency"
                 >
-                  <option value="">Choose your cryptocurrency</option>
+                  <option value="" disabled selected>
+                    Choose your cryptocurrency
+                  </option>
                 </select>
               </div>
             </div>
