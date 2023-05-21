@@ -3,7 +3,6 @@ const cryptoSelect = document.querySelector("#cryptocurrency");
 const currencySelect = document.querySelector("#currency");
 const formCrypto = document.querySelector("#formCrypto");
 
-
 const objConsult = {
   currency: "",
   cryptocurrency: "",
@@ -22,14 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
   currencySelect.addEventListener("change", readValue);
 });
 
-function consultCurrency() {
+async function consultCurrency() {
   const url =
     "https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD";
 
-  fetch(url)
-    .then((response) => response.json())
-    .then((result) => getCryptocurrencies(result.Data))
-    .then((cryptocurrencies) => selectCryptocurrencies(cryptocurrencies));
+  try {
+    const response = await fetch(url);
+    const result = await response.json();
+    const cryptocurrencies = await getCryptocurrencies(result.Data);
+    selectCryptocurrencies(cryptocurrencies);
+  } catch (error) {
+    showAlert(error);
+  }
 }
 
 function selectCryptocurrencies(cryptocurrencies) {
@@ -66,15 +69,19 @@ function showAlert(message) {
   }, 3000);
 }
 
-function consultAPI() {
+async function consultAPI() {
   const { currency, cryptocurrency } = objConsult;
 
   const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptocurrency}&tsyms=${currency}`;
-  fetch(url)
-    .then((response) => response.json())
-    .then((quote) => showPrice(quote.DISPLAY[cryptocurrency][currency]));
 
   showSpinner();
+  try {
+    const response = await fetch(url);
+    const quote = await response.json();
+    showPrice(quote.DISPLAY[cryptocurrency][currency]);
+  } catch (error) {
+    showAlert(error);
+  }
 }
 
 function showPrice(quote) {
@@ -97,12 +104,11 @@ function showPrice(quote) {
   const lastUpdate = document.createElement("p");
   lastUpdate.innerHTML = `<p>Last update: <span>${LASTUPDATE}</span></p>`;
 
-
-  result.appendChild(price)
-  result.appendChild(highDay)
-  result.appendChild(lowDay)
-  result.appendChild(lastHours)
-  result.appendChild(lastUpdate)
+  result.appendChild(price);
+  result.appendChild(highDay);
+  result.appendChild(lowDay);
+  result.appendChild(lastHours);
+  result.appendChild(lastUpdate);
 }
 
 function showSpinner() {
